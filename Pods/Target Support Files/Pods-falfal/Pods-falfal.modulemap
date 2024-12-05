@@ -1,0 +1,6 @@
+framework module Pods_falfal {
+  umbrella header "Pods-falfal-umbrella.h"
+
+  export *
+  module * { export * }
+}

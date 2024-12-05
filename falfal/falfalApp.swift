@@ -1,17 +1,18 @@
-//
-//  falfalApp.swift
-//  falfal
-//
-//  Created by hasan doğan on 29.11.2024.
-//
-
 import SwiftUI
+import GoogleMobileAds
+
 
 @main
 struct falfalApp: App {
+
+    
+    // AppDelegate bağlantısını yapıyoruz
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView()  // ContentView burada yer alıyor
+      
         }
     }
 }

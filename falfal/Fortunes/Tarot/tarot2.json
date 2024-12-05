@@ -1,0 +1,704 @@
+[
+  {
+    "id": 1,
+    "name": "Joker",
+    "front": "Joker",
+    "revert": "Joker Ters",
+    "enFront": "The fool",
+    "enRevert": "The fool - revert",
+    "image": "joker"
+  },
+  {
+    "id": 2,
+    "name": "Büyücü",
+    "front": "Büyücü",
+    "revert": "Büyücü Ters",
+    "enFront": "The magician",
+    "enRevert": "The magician - revert",
+    "image": "buyucu"
+  },
+  {
+    "id": 3,
+    "name": "azize",
+    "front": "azize",
+    "revert": "azize Ters",
+    "enFront": "The High Priestess",
+    "enRevert": "The High Priestess - revert",
+    "image": "azize"
+  },
+  {
+    "id": 4,
+    "name": "İmparatoriçe",
+    "front": "İmparatoriçe",
+    "revert": "İmparatoriçe Ters",
+    "enFront": "The Empress",
+    "enRevert": "The Empress - revert",
+    "image": "imparatorice"
+  },
+  {
+    "id": 5,
+    "name": "İmparator",
+    "front": "İmparator",
+    "revert": "İmparator Ters",
+    "enFront": "The Emperor",
+    "enRevert": "The Emperor - revert",
+    "image": "imparator"
+  },
+  {
+    "id": 6,
+    "name": "Aziz",
+    "front": "Aziz",
+    "revert": "Aziz Ters",
+    "enFront": "The Hierophant",
+    "enRevert": "The Hierophant - revert",
+    "image": "aziz"
+  },
+  {
+    "id": 7,
+    "name": "AşıK",
+    "front": "AşıK",
+    "revert": "AşıK Ters",
+    "enFront": "The Lovers",
+    "enRevert": "The Lovers - revert",
+    "image": "asik"
+  },
+  {
+    "id": 8,
+    "name": "Savaş Arabası",
+    "front": "Savaş Arabası",
+    "revert": "Savaş Arabası Ters",
+    "enFront": "The Chariot",
+    "enRevert": "The Chariot - revert",
+    "image": "savas-arabasi"
+  },
+  {
+    "id": 9,
+    "name": "Güç",
+    "front": "Güç",
+    "revert": "Güç Ters",
+    "enFront": "Strength",
+    "enRevert": "Strength - revert",
+    "image": "guc"
+  },
+  {
+    "id": 10,
+    "name": "Ermiş",
+    "front": "Ermiş",
+    "revert": "Ermiş Ters",
+    "enFront": "The Hermit",
+    "enRevert": "The Hermit - revert",
+    "image": "ermis"
+  },
+  {
+    "id": 11,
+    "name": "Kader Çarkı",
+    "front": "Kader Çarkı",
+    "revert": "Kader Çarkı Ters",
+    "enFront": "Wheel of Fortune",
+    "enRevert": "Wheel of Fortune - revert",
+    "image": "kader-carki"
+  },
+  {
+    "id": 12,
+    "name": "Adalet",
+    "front": "Adalet",
+    "revert": "Adalet Ters",
+    "enFront": "Justice",
+    "enRevert": "Justice - revert",
+    "image": "adalet"
+  },
+  {
+    "id": 13,
+    "name": "Asılan Adam",
+    "front": "Asılan Adam",
+    "revert": "Asılan Adam Ters",
+    "enFront": "The Hanged Man",
+    "enRevert": "The Hanged Man Revert",
+    "image": "asilan-adam"
+  },
+  {
+    "id": 14,
+    "name": "Ölüm",
+    "front": "Ölüm",
+    "revert": "Ölüm Ters",
+    "enFront": "Death",
+    "enRevert": "Death - revert",
+    "image": "olum"
+  },
+  {
+    "id": 15,
+    "name": "Denge",
+    "front": "Denge",
+    "revert": "Denge Ters",
+    "enFront": "Temperance",
+    "enRevert": "Temperance - revert",
+    "image": "denge"
+  },
+  {
+    "id": 16,
+    "name": "Şeytan",
+    "front": "Şeytan",
+    "revert": "Şeytan Ters",
+    "enFront": "The Devil",
+    "enRevert": "The Devil - revert",
+    "image": "seytan"
+  },
+  {
+    "id": 17,
+    "name": "Kule",
+    "front": "Kule",
+    "revert": "Kule Ters",
+    "enFront": "The Tower",
+    "enRevert": "The Tower - revert",
+    "image": "kule"
+  },
+  {
+    "id": 18,
+    "name": "Yıldız",
+    "front": "Yıldız",
+    "revert": "Yıldız Ters",
+    "enFront": "The Star",
+    "enRevert": "The Star - revert",
+    "image": "yildiz"
+  },
+  {
+    "id": 19,
+    "name": "Ay",
+    "front": "Ay",
+    "revert": "Ay Ters",
+    "enFront": "The Moon",
+    "enRevert": "The Moon - revert",
+    "image": "ay"
+  },
+  {
+    "id": 20,
+    "name": "Güneş",
+    "front": "Güneş",
+    "revert": "Güneş Ters",
+    "enFront": "The Sun",
+    "enRevert": "The Sun - revert",
+    "image": "gunes"
+  },
+  {
+    "id": 21,
+    "name": "Yargı",
+    "front": "Yargı",
+    "revert": "Yargı Ters",
+    "enFront": "Judgement",
+    "enRevert": "Judgement - revert",
+    "image": "yargi"
+  },
+  {
+    "id": 22,
+    "name": "Dünya",
+    "front": "Dünya",
+    "revert": "Dünya Ters",
+    "enFront": "The World",
+    "enRevert": "The World - revert",
+    "image": "dunya"
+  },
+  {
+    "id": 23,
+    "name": "Kılıç Ası",
+    "front": "Kılıç Ası",
+    "revert": "Kılıç Ası Ters",
+    "enFront": "Ace of Swords",
+    "enRevert": "Ace of Swords - revert",
+    "image": "kilic-asi"
+  },
+  {
+    "id": 24,
+    "name": "Kılıç İkilisi",
+    "front": "Kılıç İkilisi",
+    "revert": "Kılıç İkilisi Ters",
+    "enFront": "Two of Swords",
+    "enRevert": "Two of Swords - revert",
+    "image": "kilic-ikilisi"
+  },
+  {
+    "id": 25,
+    "name": "Kılıç Üçlüsü",
+    "front": "Kılıç Üçlüsü",
+    "revert": "Kılıç Üçlüsü Ters",
+    "enFront": "Three of Swords",
+    "enRevert": "Three of Swords - revert",
+    "image": "kilic-uclusu"
+  },
+  {
+    "id": 26,
+    "name": "Kılıç Dörtlüsü",
+    "front": "Kılıç Dörtlüsü",
+    "revert": "Kılıç Dörtlüsü Ters",
+    "enFront": "Four of Swords",
+    "enRevert": "Four of Swords - revert",
+    "image": "kilic-dortlusu"
+  },
+  {
+    "id": 27,
+    "name": "Kılıç Beşlisi",
+    "front": "Kılıç Beşlisi",
+    "revert": "Kılıç Beşlisi Ters",
+    "enFront": "Five of Swords",
+    "enRevert": "Five of Swords - revert",
+    "image": "kilic-beslisi"
+  },
+  {
+    "id": 28,
+    "name": "Kılıç Altılısı",
+    "front": "Kılıç Altılısı",
+    "revert": "Kılıç Altılısı Ters",
+    "enFront": "Six of Swords",
+    "enRevert": "Six of Swords - revert",
+    "image": "kilic-altilisi"
+  },
+  {
+    "id": 29,
+    "name": "Kılıç Yedilisi",
+    "front": "Kılıç Yedilisi",
+    "revert": "Kılıç Yedilisi Ters",
+    "enFront": "Seven of Swords",
+    "enRevert": "Seven of Swords - revert",
+    "image": "kilic-yedilisi"
+  },
+  {
+    "id": 30,
+    "name": "Kılıç Sekizlisi",
+    "front": "Kılıç Sekizlisi",
+    "revert": "Kılıç Sekizlisi Ters",
+    "enFront": "Eight of Swords",
+    "enRevert": "Eight of Swords - revert",
+    "image": "kilic-sekizlisi"
+  },
+  {
+    "id": 31,
+    "name": "Kılıç Dokuzlusu",
+    "front": "Kılıç Dokuzlusu",
+    "revert": "Kılıç Dokuzlusu Ters",
+    "enFront": "Nine of Swords",
+    "enRevert": "Nine of Swords - revert",
+    "image": "kilic-dokuzlusu"
+  },
+  {
+    "id": 32,
+    "name": "Kılıç Onlusu",
+    "front": "Kılıç Onlusu",
+    "revert": "Kılıç Onlusu Ters",
+    "enFront": "Ten of Swords",
+    "enRevert": "Ten of Swords - revert",
+    "image": "kilic-onlusu"
+  },
+  {
+    "id": 33,
+    "name": "Kılıç Prensi",
+    "front": "Kılıç Prensi",
+    "revert": "Kılıç Prensi Ters",
+    "enFront": "Page of Swords",
+    "enRevert": "Page of Swords - revert",
+    "image": "kilic-prensi"
+  },
+  {
+    "id": 34,
+    "name": "Kılıç Şövalyesi",
+    "front": "Kılıç Şövalyesi",
+    "revert": "Kılıç Şövalyesi Ters",
+    "enFront": "Knight of Swords",
+    "enRevert": "Knight of Swords - revert",
+    "image": "kilic-sovalyesi"
+  },
+  {
+    "id": 35,
+    "name": "Kılıç Kraliçesi",
+    "front": "Kılıç Kraliçesi",
+    "revert": "Kılıç Kraliçesi Ters",
+    "enFront": "Queen of Swords",
+    "enRevert": "Queen of Swords - revert",
+    "image": "kilic-kralicesi"
+  },
+  {
+    "id": 36,
+    "name": "Kılıç Kralı",
+    "front": "Kılıç Kralı",
+    "revert": "Kılıç Kralı Ters",
+    "enFront": "King of Swords",
+    "enRevert": "King of Swords - revert",
+    "image": "kilic-krali"
+  },
+  {
+    "id": 37,
+    "name": "Asa Ası",
+    "front": "Asa Ası",
+    "revert": "Asa Ası Ters",
+    "enFront": "Ace of Wands",
+    "enRevert": "Ace of Wands - revert",
+    "image": "asa-asi"
+  },
+  {
+    "id": 38,
+    "name": "Asa İkilisi",
+    "front": "Asa İkilisi",
+    "revert": "Asa İkilisi Ters",
+    "enFront": "Two of Wands",
+    "enRevert": "Two of Wands - revert",
+    "image": "asa-ikilisi"
+  },
+  {
+    "id": 39,
+    "name": "Asa Üçlüsü",
+    "front": "Asa Üçlüsü",
+    "revert": "Asa Üçlüsü Ters",
+    "enFront": "Three of Wands",
+    "enRevert": "Three of Wands - revert",
+    "image": "asa-uclusu"
+  },
+  {
+    "id": 40,
+    "name": "Asa Dörtlüsü",
+    "front": "Asa Dörtlüsü",
+    "revert": "Asa Dörtlüsü Ters",
+    "enFront": "Four of Wands",
+    "enRevert": "Four of Wands - revert",
+    "image": "asa-dortlusu"
+  },
+  {
+    "id": 41,
+    "name": "Asa Beşlisi",
+    "front": "Asa Beşlisi",
+    "revert": "Asa Beşlisi Ters",
+    "enFront": "Five of Wands",
+    "enRevert": "Five of Wands - revert",
+    "image": "asa-beslisi"
+  },
+  {
+    "id": 42,
+    "name": "Asa Altılısı",
+    "front": "Asa Altılısı",
+    "revert": "Asa Altılısı Ters",
+    "enFront": "Six of Wands",
+    "enRevert": "Six of Wands - revert",
+    "image": "asa-altilisi"
+  },
+  {
+    "id": 43,
+    "name": "Asa Yedilisi",
+    "front": "Asa Yedilisi",
+    "revert": "Asa Yedilisi Ters",
+    "enFront": "Seven of Wands",
+    "enRevert": "Seven of Wands - revert",
+    "image": "asa-yedilisi"
+  },
+  {
+    "id": 44,
+    "name": "Asa Sekizlisi",
+    "front": "Asa Sekizlisi",
+    "revert": "Asa Sekizlisi Ters",
+    "enFront": "Eight of Wands",
+    "enRevert": "Eight of Wands - revert",
+    "image": "asa-sekizlisi"
+  },
+  {
+    "id": 45,
+    "name": "Asa Dokuzlusu",
+    "front": "Asa Dokuzlusu",
+    "revert": "Asa Dokuzlusu Ters",
+    "enFront": "Nine of Wands",
+    "enRevert": "Nine of Wands - revert",
+    "image": "asa-dokuzlusu"
+  },
+  {
+    "id": 46,
+    "name": "Asa Onlusu",
+    "front": "Asa Onlusu",
+    "revert": "Asa Onlusu Ters",
+    "enFront": "Ten of Wands",
+    "enRevert": "Ten of Wands - revert",
+    "image": "asa-onlusu"
+  },
+  {
+    "id": 47,
+    "name": "Asa Prensi",
+    "front": "Asa Prensi",
+    "revert": "Asa Prensi Ters",
+    "enFront": "Page of Wands",
+    "enRevert": "Page of Wands - revert",
+    "image": "asa-prensi"
+  },
+  {
+    "id": 48,
+    "name": "Asa Şövalyesi",
+    "front": "Asa Şövalyesi",
+    "revert": "Asa Şövalyesi Ters",
+    "enFront": "Knight of Wands",
+    "enRevert": "Knight of Wands - revert",
+    "image": "asa-sovalyesi"
+  },
+  {
+    "id": 49,
+    "name": "Asa Kraliçesi",
+    "front": "Asa Kraliçesi",
+    "revert": "Asa Kraliçesi Ters",
+    "enFront": "Queen of Wands",
+    "enRevert": "Queen of Wands - revert",
+    "image": "asa-kralicesi"
+  },
+  {
+    "id": 50,
+    "name": "Asa Kralı",
+    "front": "Asa Kralı",
+    "revert": "Asa Kralı Ters",
+    "enFront": "King of Wands",
+    "enRevert": "King of Wands - revert",
+    "image": "asa-krali"
+  },
+  {
+    "id": 51,
+    "name": "Kupa Ası",
+    "front": "Kupa Ası",
+    "revert": "Kupa Ası Ters",
+    "enFront": "Ace of Cups",
+    "enRevert": "Ace of Cups - revert",
+    "image": "kupa-asi"
+  },
+  {
+    "id": 52,
+    "name": "Kupa İkilisi",
+    "front": "Kupa İkilisi",
+    "revert": "Kupa İkilisi Ters",
+    "enFront": "Two of Cups",
+    "enRevert": "Two of Cups - revert",
+    "image": "kupa-ikilisi"
+  },
+  {
+    "id": 53,
+    "name": "Kupa Üçlüsü",
+    "front": "Kupa Üçlüsü",
+    "revert": "Kupa Üçlüsü Ters",
+    "enFront": "Three of Cups",
+    "enRevert": "Three of Cups - revert",
+    "image": "kupa-uclusu"
+  },
+  {
+    "id": 54,
+    "name": "Kupa Dörtlüsü",
+    "front": "Kupa Dörtlüsü",
+    "revert": "Kupa Dörtlüsü Ters",
+    "enFront": "Four of Cups",
+    "enRevert": "Four of Cups - revert",
+    "image": "kupa-dortlusu"
+  },
+  {
+    "id": 55,
+    "name": "Kupa Beşlisi",
+    "front": "Kupa Beşlisi",
+    "revert": "Kupa Beşlisi Ters",
+    "enFront": "Five of Cups",
+    "enRevert": "Five of Cups - revert",
+    "image": "kupa-beslisi"
+  },
+  {
+    "id": 56,
+    "name": "Kupa Altılısı",
+    "front": "Kupa Altılısı",
+    "revert": "Kupa Altılısı Ters",
+    "enFront": "Six of Cups",
+    "enRevert": "Six of Cups - revert",
+    "image": "kupa-altilisi"
+  },
+  {
+    "id": 57,
+    "name": "Kupa Yedilisi",
+    "front": "Kupa Yedilisi",
+    "revert": "Kupa Yedilisi Ters",
+    "enFront": "Seven of Cups",
+    "enRevert": "Seven of Cups - revert",
+    "image": "kupa-yedilisi"
+  },
+  {
+    "id": 58,
+    "name": "Kupa Sekizlisi",
+    "front": "Kupa Sekizlisi",
+    "revert": "Kupa Sekizlisi Ters",
+    "enFront": "Eight of Cups",
+    "enRevert": "Eight of Cups - revert",
+    "image": "kupa-sekizlisi"
+  },
+  {
+    "id": 59,
+    "name": "Kupa Dokuzlusu",
+    "front": "Kupa Dokuzlusu",
+    "revert": "Kupa Dokuzlusu Ters",
+    "enFront": "Nine of Cups",
+    "enRevert": "Nine of Cups - revert",
+    "image": "kupa-dokuzlusu"
+  },
+  {
+    "id": 60,
+    "name": "Kupa Onlusu",
+    "front": "Kupa Onlusu",
+    "revert": "Kupa Onlusu Ters",
+    "enFront": "Ten of Cups",
+    "enRevert": "Ten of Cups - revert",
+    "image": "kupa-onlusu"
+  },
+  {
+    "id": 61,
+    "name": "Kupa Prensi",
+    "front": "Kupa Prensi",
+    "revert": "Kupa Prensi Ters",
+    "enFront": "Page of Cups",
+    "enRevert": "Page of Cups - revert",
+    "image": "kupa-prensi"
+  },
+  {
+    "id": 62,
+    "name": "Kupa Şövalyesi",
+    "front": "Kupa Şövalyesi",
+    "revert": "Kupa Şövalyesi Ters",
+    "enFront": "Knight of Cups",
+    "enRevert": "Knight of Cups - revert",
+    "image": "kupa-sovalyesi"
+  },
+  {
+    "id": 63,
+    "name": "Kupa Kraliçesi",
+    "front": "Kupa Kraliçesi",
+    "revert": "Kupa Kraliçesi Ters",
+    "enFront": "Queen of Cups",
+    "enRevert": "Queen of Cups - revert",
+    "image": "kupa-kralicesi"
+  },
+  {
+    "id": 64,
+    "name": "Kupa Kralı",
+    "front": "Kupa Kralı",
+    "revert": "Kupa Kralı Ters",
+    "enFront": "King of Cups",
+    "enRevert": "King of Cups - revert",
+    "image": "kupa-krali"
+  },
+  {
+    "id": 65,
+    "name": "Tılsım Ası",
+    "front": "Tılsım Ası",
+    "revert": "Tılsım Ası Ters",
+    "enFront": "Ace of Pentacles",
+    "enRevert": "Ace of Pentacles - revert",
+    "image": "tilsim-asi"
+  },
+  {
+    "id": 66,
+    "name": "Tılsım İkilisi",
+    "front": "Tılsım İkilisi",
+    "revert": "Tılsım İkilisi Ters",
+    "enFront": "Two of Pentacles",
+    "enRevert": "Two of Pentacles - revert",
+    "image": "tilsim-ikilisi"
+  },
+  {
+    "id": 67,
+    "name": "Tılsım Üçlüsü",
+    "front": "Tılsım Üçlüsü",
+    "revert": "Tılsım Üçlüsü Ters",
+    "enFront": "Three of Pentacles",
+    "enRevert": "Three of Pentacles - revert",
+    "image": "tilsim-uclusu"
+  },
+  {
+    "id": 68,
+    "name": "Tılsım Dörtlüsü",
+    "front": "Tılsım Dörtlüsü",
+    "revert": "Tılsım Dörtlüsü Ters",
+    "enFront": "Four of Pentacles",
+    "enRevert": "Four of Pentacles - revert",
+    "image": "tilsim-dortlusu"
+  },
+  {
+    "id": 69,
+    "name": "Tılsım Beşlisi",
+    "front": "Tılsım Beşlisi",
+    "revert": "Tılsım Beşlisi Ters",
+    "enFront": "Five of Pentacles",
+    "enRevert": "Five of Pentacles - revert",
+    "image": "tilsim-beslisi"
+  },
+  {
+    "id": 70,
+    "name": "Tılsım Altılısı",
+    "front": "Tılsım Altılısı",
+    "revert": "Tılsım Altılısı Ters",
+    "enFront": "Six of Pentacles",
+    "enRevert": "Six of Pentacles - revert",
+    "image": "tilsim-altilisi"
+  },
+  {
+    "id": 71,
+    "name": "Tılsım Yedilisi",
+    "front": "Tılsım Yedilisi",
+    "revert": "Tılsım Yedilisi Ters",
+    "enFront": "Seven of Pentacles",
+    "enRevert": "Seven of Pentacles - revert",
+    "image": "tilsim-yedilisi"
+  },
+  {
+    "id": 72,
+    "name": "Tılsım Sekizlisi",
+    "front": "Tılsım Sekizlisi",
+    "revert": "Tılsım Sekizlisi Ters",
+    "enFront": "Eight of Pentacles",
+    "enRevert": "Eight of Pentacles - revert",
+    "image": "tilsim-sekizlisi"
+  },
+  {
+    "id": 73,
+    "name": "Tılsım Dokuzlusu",
+    "front": "Tılsım Dokuzlusu",
+    "revert": "Tılsım Dokuzlusu Ters",
+    "enFront": "Nine of Pentacles",
+    "enRevert": "Nine of Pentacles - revert",
+    "image": "tilsim-dokuzlusu"
+  },
+  {
+    "id": 74,
+    "name": "Tılsım Onlusu",
+    "front": "Tılsım Onlusu",
+    "revert": "Tılsım Onlusu Ters",
+    "enFront": "Ten of Pentacles",
+    "enRevert": "Ten of Pentacles - revert",
+    "image": "tilsim-onlusu"
+  },
+  {
+    "id": 75,
+    "name": "Tılsım Prensi",
+    "front": "Tılsım Prensi",
+    "revert": "Tılsım Prensi Ters",
+    "enFront": "Page of Pentacles",
+    "enRevert": "Page of Pentacles - revert",
+    "image": "tilsim-prensi"
+  },
+  {
+    "id": 76,
+    "name": "Tılsım Şövalyesi",
+    "front": "Tılsım Şövalyesi",
+    "revert": "Tılsım Şovalyesi Ters",
+    "enFront": "Knight of Pentacles",
+    "enRevert": "Knight of Pentacles - revert",
+    "image": "tilsim-sovalyesi"
+  },
+  {
+    "id": 77,
+    "name": "Tılsım Kraliçesi",
+    "front": "Tılsım Kraliçesi",
+    "revert": "Tılsım Kraliçesi Ters",
+    "enFront": "Queen of Pentacles",
+    "enRevert": "Queen of Pentacles - revert",
+    "image": "tilsim-kralicesi"
+  },
+  {
+    "id": 78,
+    "name": "Tılsım Kralı",
+    "front": "Tılsım Kralı",
+    "revert": "Tılsım Kralı Ters",
+    "enFront": "King of Pentacles",
+    "enRevert": "King of Pentacles - revert",
+    "image": "tilsim-krali"
+  }
+]
