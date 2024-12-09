@@ -9,7 +9,8 @@ class AdManager: NSObject, ObservableObject, GADFullScreenContentDelegate {
 	var adIsLoading: Bool = false
 
     func loadInterstitialAd(){
-        GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = [ "17924b107454c796ada14461e26b256b" ]
+        GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = [ "17924b107454c796ada14461e26b256b",
+																					 "4e84708403982f72024e89c7e1bc0380" ]
             GADInterstitialAd.load(withAdUnitID: "ca-app-pub-1359373012454584/1160621193", request: GADRequest()) { [weak self] add, error in
                 guard let self = self else {return}
                 if let error = error{
@@ -41,7 +42,8 @@ class AdManager: NSObject, ObservableObject, GADFullScreenContentDelegate {
         }
 	
 	func loadInterstitialAdForHome(){
-		GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = [ "17924b107454c796ada14461e26b256b" ]
+		GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = [  "17924b107454c796ada14461e26b256b",
+																					  "4e84708403982f72024e89c7e1bc0380"  ]
 			GADInterstitialAd.load(withAdUnitID: "ca-app-pub-1359373012454584/1160621193", request: GADRequest()) { [weak self] add, error in
 				guard let self = self else {return}
 				if let error = error{
@@ -58,6 +60,39 @@ class AdManager: NSObject, ObservableObject, GADFullScreenContentDelegate {
 		
 		// Display InterstitialAd
 	func displayInterstitialAdForHome(){
+			guard let root = UIApplication.shared.windows.first?.rootViewController else {
+				return
+			}
+			if let add = interstitialAd{
+				add.present(fromRootViewController: root)
+				self.interstitialAdLoaded = false
+			}else{
+				print("🔵: Ad wasn't ready")
+				self.interstitialAdLoaded = false
+				self.loadInterstitialAd()
+			}
+		return;
+		}
+	
+	func loadInterstitialAdForCoffe(){
+		GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = [  "17924b107454c796ada14461e26b256b",
+																					  "4e84708403982f72024e89c7e1bc0380"  ]
+			GADInterstitialAd.load(withAdUnitID: "ca-app-pub-1359373012454584/1160621193", request: GADRequest()) { [weak self] add, error in
+				guard let self = self else {return}
+				if let error = error{
+					print("🔴: \(error.localizedDescription)")
+					self.interstitialAdLoaded = false
+					return
+				}
+				print("🟢: Loading succeeded")
+				self.interstitialAdLoaded = true
+				self.interstitialAd = add
+				self.interstitialAd?.fullScreenContentDelegate = self
+			}
+		}
+		
+		// Display InterstitialAd
+	func displayInterstitialAdForCoffe(){
 			guard let root = UIApplication.shared.windows.first?.rootViewController else {
 				return
 			}

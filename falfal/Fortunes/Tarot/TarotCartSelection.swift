@@ -1,5 +1,38 @@
 import SwiftUI
 
+// MARK: - Helper Views
+struct BackgroundView: View {
+	var body: some View {
+		LinearGradient(
+			gradient: Gradient(colors: [
+				Color.purple.opacity(0.7),
+				Color.indigo.opacity(0.6),
+				Color.blue.opacity(0.5)
+			]),
+			startPoint: .topLeading,
+			endPoint: .bottomTrailing
+		)
+		.edgesIgnoringSafeArea(.all)
+	}
+}
+
+struct TitleView: View {
+	var body: some View {
+		Text("Tarot Kartlarınızı Seçin")
+			.font(.system(size: 32, weight: .bold))
+			.foregroundStyle(
+				LinearGradient(
+					colors: [Color.white, Color.purple.opacity(0.8)],
+					startPoint: .leading,
+					endPoint: .trailing
+				)
+			)
+			.shadow(color: .black.opacity(0.2), radius: 5, x: 0, y: 3)
+			.padding(.vertical, 20)
+	}
+}
+
+// MARK: - Main View
 struct TarotCardSelectionView: View {
 	var adManager: AdManager
 	let question: String
@@ -13,33 +46,16 @@ struct TarotCardSelectionView: View {
 	@State private var isErrorMessage: Bool = false
 	@State private var navigateToCardSelection = false
 	@State private var isLocked: Bool = false
-
+	
 	var body: some View {
 		NavigationStack {
 			ZStack {
-				// Gradient Background
-				LinearGradient(
-					gradient: Gradient(colors: [Color.purple.opacity(0.6), Color.blue.opacity(0.4)]),
-					startPoint: .topLeading,
-					endPoint: .bottomTrailing
-				)
-				.edgesIgnoringSafeArea(.all)
+				BackgroundView()
 				
 				VStack(spacing: 20) {
-					// Title with Shadow and Gradient
-					Text("Tarot Kartlarınızı Seçin")
-						  .font(.system(size: 28, weight: .bold))
-						  .foregroundStyle(
-							  LinearGradient(
-								  colors: [Color.pink, Color.purple],
-								  startPoint: .leading,
-								  endPoint: .trailing
-							  )
-						  )
-						  .shadow(color: .black.opacity(0.2), radius: 5, x: 0, y: 3)
-						  .padding(.bottom, 10)  // Metni yukarıya kaydırır
+					TitleView()
 					
-					// Circular Card Layout
+					// Cards Selection Area
 					GeometryReader { geometry in
 						ZStack {
 							ForEach(cardData) { card in
@@ -49,39 +65,140 @@ struct TarotCardSelectionView: View {
 					}
 					.frame(height: 350)
 					
-					// Selected Cards Display
-					selectedCardsView()
+					Spacer()
 					
-					// Submit Button with Stylish Design
-					submitButton()
+					// Selected Cards Display
+					VStack(spacing: 15) {
+						HStack {
+							Text("\(selectedCards.count)/7")
+								.font(.system(size: 16, weight: .semibold))
+								.foregroundColor(selectedCards.count == 7 ? .green : .white)
+								.padding(.horizontal, 12)
+								.padding(.vertical, 6)
+								.background(
+									Capsule()
+										.fill(Color.black.opacity(0.2))
+										.overlay(
+											Capsule()
+												.stroke(selectedCards.count == 7 ? .green.opacity(0.3) : .white.opacity(0.2), lineWidth: 1)
+										)
+								)
+						}
+						
+						ScrollView(.horizontal, showsIndicators: false) {
+							HStack(spacing: -15) {
+								ForEach(selectedCards) { card in
+									Image(card.image)
+										.resizable()
+										.scaledToFit()
+										.frame(width: 60, height: 100)
+										.rotationEffect(.degrees(card.isReverted ? 180 : 0))
+										.shadow(color: .black.opacity(0.3), radius: 5, x: 0, y: 3)
+										.transition(.scale)
+								}
+							}
+							.padding(.horizontal)
+						}
+					}
+					.padding(.vertical, 20)
+					
+					// Submit Button
+					Button(action: {
+						processTarotSelection()
+						navigateToCardSelection = true
+					}) {
+						Text("Falıma Bak")
+							.font(.system(size: 20, weight: .semibold))
+							.foregroundColor(.white)
+							.frame(maxWidth: .infinity)
+							.frame(height: 56)
+							.background(
+								LinearGradient(
+									colors: selectedCards.count == 7 ?
+										[Color.purple.opacity(0.8), Color.blue.opacity(0.8)] :
+										[Color.gray.opacity(0.5), Color.gray.opacity(0.3)],
+									startPoint: .leading,
+									endPoint: .trailing
+								)
+							)
+							.clipShape(RoundedRectangle(cornerRadius: 28))
+							.overlay(
+								RoundedRectangle(cornerRadius: 28)
+									.stroke(Color.white.opacity(0.2), lineWidth: 1)
+							)
+							.shadow(color: Color.purple.opacity(0.3), radius: 10, x: 0, y: 5)
+					}
+					.disabled(selectedCards.count != 7)
+					.padding(.horizontal, 20)
+					.padding(.bottom, 30)
 				}
-				.padding()
 				
 				// Message Overlay
 				if showMessage {
-					messageOverlayView()
+					Color.black.opacity(0.4)
+						.edgesIgnoringSafeArea(.all)
+						.overlay(
+							VStack(spacing: 20) {
+								Text(messageTitle)
+									.font(.system(size: 20, weight: .bold))
+									.foregroundColor(isErrorMessage ? .red : .white)
+								
+								Text(messageContent)
+									.font(.system(size: 16))
+									.foregroundColor(.white.opacity(0.9))
+									.multilineTextAlignment(.center)
+								
+								Button(action: {
+									withAnimation {
+										showMessage = false
+									}
+								}) {
+									Text("Tamam")
+										.font(.system(size: 16, weight: .semibold))
+										.foregroundColor(.white)
+										.frame(width: 120, height: 44)
+										.background(
+											LinearGradient(
+												colors: [.purple.opacity(0.8), .blue.opacity(0.8)],
+												startPoint: .leading,
+												endPoint: .trailing
+											)
+										)
+										.clipShape(Capsule())
+								}
+							}
+							.padding(30)
+							.background(
+								RoundedRectangle(cornerRadius: 25)
+									.fill(.ultraThinMaterial)
+									.overlay(
+										RoundedRectangle(cornerRadius: 25)
+											.stroke(Color.white.opacity(0.2), lineWidth: 1)
+									)
+							)
+							.shadow(color: .black.opacity(0.2), radius: 20, x: 0, y: 10)
+						)
 						.zIndex(1)
 				}
 			}
 			.navigationBarHidden(true)
 			.onAppear {
 				loadCardData()
-				 adManager.loadInterstitialAd()
-
+				adManager.loadInterstitialAd()
 			}
+			.navigationBarTitleDisplayMode(.inline)
 			.navigationDestination(isPresented: $navigateToCardSelection) {
-				HomeView(isLocked: $isLocked, adManager: adManager)
+				TabBarView(adManager: AdManager()).environmentObject(AppState())
 			}
 		}
 	}
 	
+	// MARK: - Card View
 	private func cardView(card: Card, geometry: GeometryProxy) -> some View {
 		let totalCards = CGFloat(cardData.count)
 		let angle = 2 * .pi / totalCards * CGFloat(cardData.firstIndex(where: { $0.id == card.id }) ?? 0)
-
-		// Radius'u ayarlayın, bu dairesel düzenin boyutunu belirler
-		let radius: CGFloat = min(geometry.size.width, geometry.size.height) * 0.40  // %35'lik bir oranla ayarlıyoruz
-
+		let radius: CGFloat = min(geometry.size.width, geometry.size.height) * 0.40
+		
 		return Image(card.image)
 			.resizable()
 			.scaledToFit()
@@ -93,8 +210,8 @@ struct TarotCardSelectionView: View {
 				Color.black.opacity(0.4) : Color.clear
 			)
 			.offset(
-				x: (geometry.size.width / 2) - 50 + radius * cos(angle),  // X-offset'i biraz sola kaydırıyoruz
-				y: (geometry.size.height / 2) - 50 + radius * sin(angle) // Y-offset değişmeden kalacak
+				x: (geometry.size.width / 2) - 50 + radius * cos(angle),
+				y: (geometry.size.height / 2) - 50 + radius * sin(angle)
 			)
 			.onTapGesture {
 				withAnimation {
@@ -103,108 +220,24 @@ struct TarotCardSelectionView: View {
 			}
 			.animation(.spring(), value: selectedCards)
 	}
-
 	
-	private func selectedCardsView() -> some View {
-		HStack(spacing: -20) {
-			ForEach(selectedCards) { card in
-				Image(card.image)
-					.resizable()
-					.scaledToFit()
-					.frame(width: 50, height: 100)
-					.rotationEffect(.degrees(card.isReverted ? 180 : 0))
-					.shadow(color: .black.opacity(0.2), radius: 5, x: 0, y: 3)
-					.transition(.asymmetric(insertion: .scale, removal: .slide))
-			}
-		}
-		.padding(.top, 50)  // Kartları biraz daha aşağıya kaydırır
-		.animation(.spring(), value: selectedCards)
-	}
-	
-	// Submit Button
-	private func submitButton() -> some View {
-		Button(action: {
-			processTarotSelection()
-			navigateToCardSelection = true
-		}) {
-			Text("Gönder")
-				.font(.headline)
-				.foregroundColor(.white)
-				.padding()
-				.frame(maxWidth: .infinity)
-				.background(
-					LinearGradient(
-						gradient: Gradient(colors: [Color.purple, Color.blue]),
-						startPoint: .leading,
-						endPoint: .trailing
-					)
-				)
-				.cornerRadius(30)
-				.shadow(color: .purple.opacity(0.5), radius: 10, x: 0, y: 5)
-		}
-		.disabled(selectedCards.isEmpty)
-		.opacity(selectedCards.isEmpty ? 0.6 : 1)
-	}
-	
-	// Message Overlay View
-	private func messageOverlayView() -> some View {
-		VStack {
-			Text(messageTitle)
-				.font(.headline)
-				.foregroundColor(isErrorMessage ? .red : .green)
-			Text(messageContent)
-				.font(.body)
-				.padding(.top, 8)
-			ProgressView()
-				.padding(.top, 16)
-		}
-		.frame(width: 280, height: 200)
-		.background(
-			RoundedRectangle(cornerRadius: 20)
-				.fill(Color.white)
-				.shadow(color: .black.opacity(0.2), radius: 15, x: 0, y: 5)
-		)
-		.transition(.scale)
-		.onAppear {
-			DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-				withAnimation {
-					showMessage = false
-				}
-			}
-		}
-	}
-	
+	// MARK: - Helper Functions
 	func toggleCardState(_ card: Card) {
-		// Check if the card is already selected
-		guard !selectedCards.contains(where: { $0.id == card.id }) else {
-			return
-		}
-
-		// Limit card selection to 7
+		guard !selectedCards.contains(where: { $0.id == card.id }) else { return }
 		guard selectedCards.count < 7 else {
-				print("Limit Exceeded: Showing message") // Debug print
-				showMessage(
-					title: "Sınır Aşıldı",
-					message: "En fazla 7 kart seçebilirsiniz.",
-					isError: true
-				)
-			
-				return
-			}
-
-		// Find the index of the card in cardData
-		guard let index = cardData.firstIndex(where: { $0.id == card.id }) else {
+			showMessage(
+				title: "Sınır Aşıldı",
+				message: "En fazla 7 kart seçebilirsiniz.",
+				isError: true
+			)
 			return
 		}
-
-		// Randomly decide card orientation
+		
+		guard let index = cardData.firstIndex(where: { $0.id == card.id }) else { return }
+		
 		let isReverted = Bool.random()
-
-		// Update the card in cardData
 		cardData[index].isReverted = isReverted
 		cardData[index].image = convertToImageName(from: cardData[index].name)
-
-		// Add the card to selected cards
 		selectedCards.append(cardData[index])
 	}
 
@@ -308,6 +341,11 @@ struct TarotCardSelectionView: View {
                     
                     completion(true)
                 } else {
+						Alert(
+							title: Text("Falınız Devam Ediyor"),
+							message: Text("Falınız halen devam etmekte. Lütfen bitmesini bekleyin."),
+							dismissButton: .default(Text("Tamam"))
+						)
                     showMessage(title: "Hata", message: "verileri sunucuya ulaştıramadık.", isError: true)
                     print("Failed to send data. Status code: \((response as? HTTPURLResponse)?.statusCode ?? 0)")
                     completion(false)

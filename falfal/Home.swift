@@ -1,4 +1,6 @@
 import SwiftUI
+import Combine
+import Foundation
 
 struct HomeView: View {
 	
@@ -15,196 +17,185 @@ struct HomeView: View {
 	@State private var type: String?
 	@State private var id: Int?
 	@State private var shortLimit: Int?
+	@State private var totalTime: Int?
 	@Binding var isLocked: Bool
-	
+	@State private var cancellables = Set<AnyCancellable>()
+	@State private var progressTimer: AnyCancellable?
+
 	@EnvironmentObject var appState: AppState // AppState erişimi
 	
 	var adManager =  AdManager()
 	
 	
+	// HomeView
 	var body: some View {
 		NavigationView {
-			VStack {
-				// Progress Bar, fal durumu kontrolünden bağımsız olarak gösteriliyor
-				if pendingStatus {
-					VStack(spacing: 8) {
-							   Text("Falınıza özenle bakıyoruz ama bunun için biraz beklemeniz gerekecek.")
-								   .font(.subheadline)
-								   .fontWeight(.medium)
-								   .foregroundColor(.gray)
-								   .multilineTextAlignment(.center)
-								   .foregroundColor(.white)
-								   .padding(.horizontal)
-							   
-							   HStack {
-								   // Custom Progress Bar with Gradient and Animation
-								   ZStack(alignment: .leading) {
-									   RoundedRectangle(cornerRadius: 10)
-										   .fill(Color.gray.opacity(0.3))
-										   .frame(height: 20)
-									   
-									   RoundedRectangle(cornerRadius: 10)
-										   .fill(LinearGradient(gradient: Gradient(colors: [.blue, .purple]), startPoint: .leading, endPoint: .trailing))
-										   .frame(width: CGFloat(pendingProgress) * 200, height: 20)
-										   .animation(.easeInOut(duration: 0.5), value: pendingProgress)
-								   }
-								   .frame(height: 20)
-								   .padding(.trailing, 8)
-								   
-								   // "Reklam İzle" Button
-								   Button(action: {
-									   showAdToReduceTime()
-								   }) {
-									   HStack(spacing: 4) {
-										   Image(systemName: "play.rectangle.fill")
-											   .foregroundColor(.blue)
-										   Text("Reklam İzle")
-											   .font(.system(size: 14, weight: .bold))
-											   .foregroundColor(.blue)
-									   }
-									   .padding(.horizontal, 12)
-									   .padding(.vertical, 6)
-									   .background(Color(.systemGray6))
-									   .cornerRadius(8)
-								   }
-								   .disabled(isAdButtonDisabled) // Butonu pasif yap
-								   .opacity(isAdButtonDisabled ? 0.5 : 1) // Buton pasif olduğunda opaklık değeri azaltılır
-								   .foregroundColor(isAdButtonDisabled ? .gray : .blue) // Butonun rengini değiştirme
-							   }
-							   .onAppear {
-								   adManager.loadInterstitialAd()
-							   }
-							   .padding(.horizontal)
-							   
-							   Text("Falın daha hızlı bitmesi için reklam izleyebilirsiniz.")
-								   .font(.footnote)
-								   .foregroundColor(.gray)
-								   .padding(.horizontal)
-						   }
-						   .padding(.top)
-						   .overlay(
-								   // Üst border normal
-								   RoundedRectangle(cornerRadius: 15)
-									   .stroke(
-										   LinearGradient(gradient: Gradient(colors: [.blue, .purple]), startPoint: .leading, endPoint: .trailing),
-										   lineWidth: 1
-									   )
-									   .padding(.top, 12) // Alt kenarın üstten biraz uzaklaşması için
-									   .shadow(color: .purple.opacity(0.5), radius: 10, x: 0, y: 0) // Glow efekti
-						   )
-						   .onChange(of: pendingProgress) { _ in
-						   }
-					   }
+			ZStack {
+				// Better background gradient
+				LinearGradient(
+					gradient: Gradient(colors: [
+						Color(.systemBlue).opacity(0.8),
+						Color(.systemGreen).opacity(0.8),
+						Color(.systemPurple).opacity(0.8)
+					]),
+					startPoint: .bottom,
+					endPoint: .top
+				)
+				.ignoresSafeArea()
 				
-				// Fal durumu kontrolü
-				if fortunes.isEmpty {
-					ScrollView(showsIndicators: false) {
-						VStack(spacing: 16) {
-							Text("Fal Bakmanın Eğlencesi: Kaderin Anahtarı Sizin Ellerinizde")
-								.font(.title2)
-								.fontWeight(.bold)
+				// Content
+				VStack(spacing: 0) {
+					if pendingStatus {
+						VStack(spacing: 12) {
+							Text("Falınıza özenle bakıyoruz ama bunun için biraz beklemeniz gerekecek.")
+								.font(.system(size: 15))
+								.foregroundColor(Color(.systemCyan))
 								.multilineTextAlignment(.center)
-								.padding()
+								.padding(.horizontal)
 							
-							Text("Fal bakmak, hayatınıza eğlenceli bir dokunuş katmanın harika bir yoludur. Bu mistik deneyim, günlük rutininizin dışına çıkmanızı sağlar ve bazen size ilham verici ipuçları sunabilir. Ancak, unutmayın ki kaderiniz yalnızca sizin ellerinizdedir. Fal bakmanın büyüsüne kapılmak keyiflidir, ancak gerçek başarılar ve mutluluk, aldığınız kararlarda ve attığınız adımlarda yatar. Hayatınıza yön veren sizsiniz ve geleceğinizi şekillendirme gücü tamamen size ait. Fal bakmayı bir eğlence olarak görüp tadını çıkarın, fakat asıl gücün ve kontrolün sizin elinizde olduğunu asla unutmayın. Geleceğinizi inşa etmek için kendi içsel gücünüzü ve kararlılığınızı kullanın. Ayrıca profilinizde eksik olan bilgilerin doldurulması falın doğruluğu açısından önemlidir. Profilinizi güncelleyerek falınızı daha doğru bir şekilde alabilirsiniz.")
-								.font(.body)
-								.foregroundColor(.gray)
-								.multilineTextAlignment(.center)
-								.padding(15)
+							HStack(spacing: 12) {
+								// Progress bar
+								ZStack(alignment: .leading) {
+									Capsule()
+										.fill(Color(.systemGray4))
+										.frame(height: 6)
+									
+									Capsule()
+										.fill(LinearGradient(
+											gradient: Gradient(colors: [.blue, .purple]),
+											startPoint: .leading,
+											endPoint: .trailing
+										))
+										.frame(width: CGFloat(pendingProgress) * 200, height: 6)
+								}
+								
+								// Ad button
+								Button(action: { showAdToReduceTime() }) {
+									HStack(spacing: 6) {
+										Image(systemName: "play.rectangle.fill")
+											.foregroundColor(.blue)
+										Text("Reklam İzle")
+											.font(.system(size: 14, weight: .medium))
+									}
+									.padding(.horizontal, 12)
+									.padding(.vertical, 8)
+									.background(Color(.systemBackground).opacity(0.2))
+									.cornerRadius(20)
+								}
+								.disabled(isAdButtonDisabled)
+								.opacity(isAdButtonDisabled ? 0.5 : 1)
+							}
+							.padding(.horizontal)
+							
+							Text(formatRemainingTime())
+								.font(.system(size: 13))
+								.foregroundColor(Color(.systemGray2))
+							
+							Text("Falın daha hızlı bitmesi için reklam izleyebilirsiniz.")
+								.font(.system(size: 13))
+								.foregroundColor(Color(.systemCyan))
+								.padding(.bottom, 8)
 						}
+						.padding(.vertical, 16)
+						.background(
+							RoundedRectangle(cornerRadius: 20)
+								.fill(Color(.systemBackground).opacity(0.8))
+								.overlay(
+									RoundedRectangle(cornerRadius: 20)
+										.stroke(.white.opacity(0.8), lineWidth: 0.5)
+								)
+						)
+						.padding(.horizontal)
+						.padding(.top, 16)
 					}
-					.padding()
-				} else {
-					// Eğer fal varsa bunları göster
-					if isLoading {
-						ProgressView("Yükleniyor...")
-					} else if let errorMessage = errorMessage {
-						Text(errorMessage)
-							.foregroundColor(.red)
+					
+					if fortunes.isEmpty {
+						ScrollView(showsIndicators: false) {
+							VStack(spacing: 20) {
+								Text("Fal Bakmanın Eğlencesi: Kaderin Anahtarı Sizin Ellerinizde")
+									.font(.system(size: 22, weight: .bold))
+									.multilineTextAlignment(.center)
+									.foregroundColor(.white)
+									.padding(.top, 30)
+								
+								Text("Fal bakmak, hayatınıza eğlenceli bir dokunuş katmanın harika bir yoludur. Bu mistik deneyim, günlük rutininizin dışına çıkmanızı sağlar ve bazen size ilham verici ipuçları sunabilir. Ancak, unutmayın ki kaderiniz yalnızca sizin ellerinizdedir. Fal bakmanın büyüsüne kapılmak keyiflidir, ancak gerçek başarılar ve mutluluk, aldığınız kararlarda ve attığınız adımlarda yatar. Hayatınıza yön veren sizsiniz ve geleceğinizi şekillendirme gücü tamamen size ait. Fal bakmayı bir eğlence olarak görüp tadını çıkarın, fakat asıl gücün ve kontrolün sizin elinizde olduğunu asla unutmayın. Geleceğinizi inşa etmek için kendi içsel gücünüzü ve kararlılığınızı kullanın. Ayrıca profilinizde eksik olan bilgilerin doldurulması falın doğruluğu açısından önemlidir. Profilinizi güncelleyerek falınızı daha doğru bir şekilde alabilirsiniz.")
+									.font(.system(size: 16))
+									.foregroundColor(.white)
+									.multilineTextAlignment(.center)
+									.padding(.horizontal)
+									.padding(.bottom, 20)
+							}
 							.padding()
+							.background(
+								RoundedRectangle(cornerRadius: 20)
+									.fill(Color(.systemBackground).opacity(0.1))
+									.overlay(
+										RoundedRectangle(cornerRadius: 20)
+											.stroke(.white.opacity(0.1), lineWidth: 0.5)
+									)
+							)
+							.padding()
+						}
 					} else {
-						ScrollView (showsIndicators: false){
-							VStack(spacing: 16) {
-								ForEach(fortunes, id: \.id) { fortune in
-									NavigationLink(
-										destination: navigateToDetail(fortune: fortune)
-									) {
-										VStack {
-											HStack {
-											}
-											.foregroundStyle(.primary)
-											HStack(spacing: 16) {
-												Image("tarot")
-													.renderingMode(.original)
-													.resizable()
-													.aspectRatio(contentMode: .fill)
-													.frame(width: 109)
-													.clipped()
-													.mask { RoundedRectangle(cornerRadius: 26, style: .continuous) }
-												VStack(spacing: 2) {
-													Text(fortune.question)
-														.frame(maxWidth: .infinity, alignment: .center)
-														.clipped()
-														.font(.system(.callout, weight: .semibold))
-														.foregroundStyle(LinearGradient(
-															colors: [.blue, .purple],
-															startPoint: .leading,
-															endPoint: .trailing
-														))
-													Text(fortune.message.prefix(100) + "...")
-														.frame(maxWidth: .infinity, alignment: .leading)
-														.clipped()
-														.font(.system(.footnote, weight: .regular))
-														.foregroundStyle(.white)
-												}
-											}
-											HStack {
-												Text(fortune.date)
-													.foregroundStyle(LinearGradient(
-														colors: [.blue, .purple],
-														startPoint: .leading,
-														endPoint: .trailing
-													))
-													.font(.system(.footnote, weight: .semibold))
-													.padding(5)
-													.padding(.horizontal, 2)
-													.background {
-														RoundedRectangle(cornerRadius: 14, style: .continuous)
-															.fill(.green.opacity(0.06))
-													}
-											}
-											.frame(maxWidth: .infinity, alignment: .leading)
-											
-										}
-										.padding(19)
-										.frame(alignment: .top)
-										.clipped()
-										.foregroundStyle(.primary.opacity(0.5))
-										.background {
-											RoundedRectangle(cornerRadius: 4, style: .circular)
-												.stroke(.blue, lineWidth: 1)
-												.background(RoundedRectangle(cornerRadius: 4, style: .circular).fill(Color(.secondarySystemBackground)))
-												.shadow(color: .blue.opacity(0.5), radius: 11, x: 0, y: 4)
-										}
-										.foregroundStyle(Color(.secondarySystemBackground))
-										.mask { RoundedRectangle(cornerRadius: 20, style: .continuous) }
-										
+						if isLoading {
+							ProgressView()
+								.scaleEffect(1.2)
+								.tint(.white)
+						} else if let errorMessage = errorMessage {
+							Text(errorMessage)
+								.foregroundColor(.red)
+								.padding()
+						} else {
+							ScrollView(showsIndicators: false) {
+								LazyVStack(spacing: 16) {
+									ForEach(fortunes, id: \.id) { fortune in
+										FortuneCardView(
+											title: fortune.type == "Kahve Falı" ? "Kahve Falı" : fortune.question ?? "",
+											info: fortune.message,
+											redirectView: navigateToDetail(fortune: fortune)
+										)
 									}
 								}
+								.padding(.vertical, 16)
 							}
 						}
-						.padding(.horizontal, 16)
 					}
+				}
+			}
+			.navigationTitle("Fallarım")
+			.navigationBarTitleDisplayMode(.inline)
+			.toolbar {
+				ToolbarItem(placement: .principal) {
+					Text("Fallarım")
+						.font(.system(size: 18, weight: .semibold))
+						.foregroundColor(.white)
 				}
 			}
 			.onAppear {
 				fetchDashboardData()
 			}
 		}
-		.background(Color.black)
-		.edgesIgnoringSafeArea(.all)
-		.preferredColorScheme(.dark)
 	}
+		
+
+	
+	
+	
+	// Kalan süreyi formatlamak için yardımcı bir fonksiyon
+ func formatRemainingTime() -> String {
+	 guard let totalTime = totalTime, totalTime > 0 else {
+		 return "Kalan süre: 0 dakika"
+	 }
+	 
+	 let minutes = totalTime / 60
+	 let seconds = totalTime % 60
+	 
+	 if minutes > 0 {
+		 return "Kalan süre: \(minutes) dakika \(seconds) saniye"
+	 } else {
+		 return "Kalan süre: \(seconds) saniye"
+	 }
+ }
 	
 	
 	func checkLogin(){
@@ -225,14 +216,16 @@ struct HomeView: View {
 	private func navigateToDetail(fortune: Fortune) -> some View {
 		if fortune.type.lowercased() == "tarot" {
 			TarotDetailView(tarotId: fortune.id)
-		} else if fortune.type.lowercased() == "coffee" {
-			// CoffeeDetailView(id: fortune.id)
+		} else if fortune.type.lowercased() == "kahve falı" {
+			 CoffeeDetailView(coffeeId: fortune.id)
 		} else {
+			
 			Text("Bu tür için bir detay sayfası bulunamadı.")
 		}
 	}
 	
 	func fetchDashboardData() {
+		adManager.loadInterstitialAdForHome()
 		checkLogin()
 		guard let token = Keychain.get(key: "authToken") else {
 			print("Auth token bulunamadı")
@@ -274,7 +267,6 @@ struct HomeView: View {
 			do {
 				let decoder = JSONDecoder()
 				let jsonResponse = try decoder.decode(DashboardResponse.self, from: data)
-				
 				DispatchQueue.main.async {
 					self.fortunes = jsonResponse.data.fortunes
 					self.handlePendingProcess(jsonResponse.data.pendingProcess)
@@ -290,11 +282,51 @@ struct HomeView: View {
 		}.resume()
 	}
 	
+	
+	func startProgressTracking() {
+		// Önce mevcut timer'ı iptal et
+		progressTimer?.cancel()
+		
+		guard let serverTime = serverTime,
+			  let createAt = createAt,
+			  let endDate = endDate else { return }
+		
+		// Yeni timer'ı başlat
+		progressTimer = Timer.publish(every: 1.0, on: .main, in: .common)
+			.autoconnect()
+			.sink { currentTime in
+				guard let currentEndDate = self.endDate,
+					  let currentCreateAt = self.createAt else { return }
+				
+				let totalDuration = currentEndDate.timeIntervalSince(currentCreateAt)
+				let elapsedDuration = currentTime.timeIntervalSince(currentCreateAt)
+				
+				// Kalan süreyi hesapla
+				self.totalTime = Int(totalDuration - elapsedDuration)
+				
+				// Reklam butonu durumunu güncelle
+				self.isAdButtonDisabled = totalDuration - elapsedDuration <= 120 || self.shortLimit == 2
+				
+				// Progress durumunu güncelle
+				if elapsedDuration < 0 {
+					self.pendingProgress = 0.0
+				} else if elapsedDuration >= totalDuration {
+					self.pendingProgress = 1.0
+					self.pendingStatus = false
+					self.isLocked = false
+					// Timer'ı durdur
+					self.progressTimer?.cancel()
+				} else {
+					self.pendingProgress = Float(elapsedDuration / totalDuration)
+				}
+			}
+	}
+
+	
 	func handlePendingProcess(_ pendingProcess: PendingProcess) {
 		if let serverResponseTime = parseDate(from: pendingProcess.serverResponseTime) {
 			self.serverTime = serverResponseTime
 		}
-		print(pendingProcess)
 		if pendingProcess.status,
 		   let startDate = parseDate(from: pendingProcess.createAt),
 		   let finishDate = parseDate(from: pendingProcess.endDate) {
@@ -305,43 +337,13 @@ struct HomeView: View {
 			self.type = pendingProcess.type
 			self.id = pendingProcess.id
 			self.shortLimit = pendingProcess.shortLimit
-			calculateProgress()
+			startProgressTracking()
 		} else {
 			self.pendingStatus = false
 			self.isLocked = false
 		}
 	}
 	
-	func calculateProgress() {
-		guard let serverTime = serverTime, let createAt = createAt, let endDate = endDate else { return }
-		let totalDuration = endDate.timeIntervalSince(createAt)
-		let elapsedDuration = serverTime.timeIntervalSince(createAt)
-	
-		
-		if totalDuration - elapsedDuration <= 120 {
-			isAdButtonDisabled = true
-		} else {
-			isAdButtonDisabled = false
-		}
-		// 2. Eğer shortLimit = 2 ise
-		if shortLimit == 2 {
-
-			isAdButtonDisabled = true
-		}
-		
-		if elapsedDuration < 0 {
-			self.pendingProgress = 0.0
-		} else if elapsedDuration >= totalDuration {
-			self.pendingProgress = 1.0
-			self.pendingStatus = false // İşlem tamamlanınca gizle
-			self.isLocked = false
-		} else {
-			self.pendingProgress = Float(elapsedDuration / totalDuration)
-			DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-				self.calculateProgress() // Her saniye yeniden hesapla
-			}
-		}
-	}
 	
 	func parseDate(from dateString: String?) -> Date? {
 		guard let dateString = dateString else { return nil } // Eğer dateString nil ise direkt nil döner
@@ -353,6 +355,7 @@ struct HomeView: View {
 	func showAdToReduceTime() {
 		// Reklam izleme mantığını buraya ekleyin
 		adManager.displayInterstitialAdForHome()
+		
 		
 		if adManager.adIsLoading {
 			guard let id = self.id else {
@@ -398,9 +401,8 @@ struct HomeView: View {
 			let jsonData = try JSONSerialization.data(withJSONObject: body, options: [])
 			request.httpBody = jsonData
 			
-			if let jsonString = String(data: jsonData, encoding: .utf8) {
-				  print("Gönderilen Veri (JSON): \(jsonString)")
-			  }
+			updateTimeAfterAd()
+			
 		} catch {
 			print("JSON verisi oluşturulamadı: \(error.localizedDescription)")
 			return
@@ -415,28 +417,31 @@ struct HomeView: View {
 			}
 			
 			// Yanıtı kontrol et
-			guard let httpResponse = response as? HTTPURLResponse else {
+			guard response is HTTPURLResponse else {
 				print("HTTP yanıtı geçersiz.")
 				return
 			}
 			
-			print("HTTP Durum Kodu: \(httpResponse.statusCode)")
-			print("HTTP Header'ları: \(httpResponse.allHeaderFields)")
-			
-			if let data = data {
-				print("Ham Yanıt Verisi: \(String(data: data, encoding: .utf8) ?? "Veri okunamadı")")
-				do {
-					let json = try JSONSerialization.jsonObject(with: data, options: [])
-					print("JSON Yanıtı: \(json)")
-				} catch {
-					print("Gelen yanıt JSON formatında değil: \(error.localizedDescription)")
-				}
-			} else {
-				print("Yanıt verisi alınamadı.")
-			}
 		}
 		task.resume()
 	}
+	
+	
+	// Reklam izlendikten sonra çağrılacak fonksiyon
+	func updateTimeAfterAd() {
+		// Önce mevcut timer'ı durdur
+		progressTimer?.cancel()
+		
+		// endDate'i güncelle (5 dakika azalt)
+		if let currentEndDate = endDate {
+			endDate = currentEndDate.addingTimeInterval(-300) // 5 dakika = 300 saniye
+		}
+		
+		// Progress tracking'i yeniden başlat
+		startProgressTracking()
+	}
+	
+
 	
 	// Custom Progress Bar
 	struct CustomProgressBar: View {
@@ -466,7 +471,7 @@ struct HomeView: View {
 		let date: String
 		let type: String
 		let page: String
-		let question: String
+		let question: String? // Opsiyonel hale getiriyoruz
 		let message: String
 	}
 	
@@ -507,7 +512,8 @@ struct HomeView: View {
 		
 		var body: some View {
 			VStack(alignment: .leading, spacing: 16) {
-				Text(fortune.question)
+				// Eğer fortune.question varsa, onu göster, yoksa "Kahve Falı" yaz
+				Text(fortune.question ?? "Kahve Falı")
 					.font(.largeTitle)
 					.padding(.bottom, 8)
 				
@@ -526,8 +532,6 @@ struct HomeView: View {
 				Spacer()
 			}
 			.padding()
-			.navigationTitle("Detay")
-			.navigationBarTitleDisplayMode(.inline)
 		}
 	}
 	

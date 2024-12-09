@@ -3,4 +3,52 @@
    uuid = "6C6AD48E-A354-448F-AEBD-C7F2AC501694"
    type = "0"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7323A74C-16E7-4A07-8AF9-183A41348CA7"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "falfal/Fortunes/Tarot/TarotQuestionView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "4"
+            endingLineNumber = "4"
+            landmarkName = "TarotQuestionView"
+            landmarkType = "14">
+            <Locations>
+               <Location
+                  uuid = "7323A74C-16E7-4A07-8AF9-183A41348CA7 - a78ad3805d64190f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "property wrapper backing initializer of falfal.TarotQuestionView.question : Swift.String"
+                  moduleName = "falfal.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hasandogan/Desktop/falfal/falfal/Fortunes/Tarot/TarotQuestionView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0">
+               </Location>
+               <Location
+                  uuid = "7323A74C-16E7-4A07-8AF9-183A41348CA7 - 17201b6793d279b8"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "falfal.TarotQuestionView.init(adManager: falfal.AdManager, appState: SwiftUI.EnvironmentObject&lt;falfal.AppState&gt;) -&gt; falfal.TarotQuestionView"
+                  moduleName = "falfal.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hasandogan/Desktop/falfal/falfal/Fortunes/Tarot/TarotQuestionView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "4"
+                  endingLineNumber = "4">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

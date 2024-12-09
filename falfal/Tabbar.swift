@@ -35,18 +35,14 @@ struct TabBarView: View {
                     dismissButton: .default(Text("Tamam"))
                 )
             }
-
-            // Profil/Giriş sekmesi
-            Group {
-                if appState.isAuthenticated {
-                    ProfileView()
-                } else {
-                    AuthView()
-                }
-            }
-            .tabItem {
-                Label(appState.isAuthenticated ? "Profil" : "Giriş", systemImage: "person.fill")
-            }
+			if appState.isAuthenticated {
+				ProfileView()
+					.tabItem {
+						Label("Profil", systemImage: "person.fill")
+					}
+			}
+			
+			
         }
         .environmentObject(appState)
     }

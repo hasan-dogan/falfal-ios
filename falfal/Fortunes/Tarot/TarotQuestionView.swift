@@ -9,7 +9,7 @@ struct TarotQuestionView: View {
 	var body: some View {
 		// Kullanıcı giriş yapmamışsa AuthView'e yönlendir
 		if !appState.isAuthenticated {
-			return AnyView(AuthView()) // Burada AuthView'e yönlendiriyoruz
+			return AnyView(AuthView(user: .constant(nil), backgroundImage: Image("Falsal"))) // Burada AuthView'e yönlendiriyoruz
 		}else{
 			return AnyView(
 			NavigationStack {
@@ -90,6 +90,7 @@ struct TarotQuestionView: View {
 						Spacer()
 					}
 				}
+				.navigationBarTitleDisplayMode(.inline)
 				.navigationDestination(isPresented: $navigateToCardSelection) {
 					TarotCardSelectionView(adManager: adManager, question: question)
 						  }

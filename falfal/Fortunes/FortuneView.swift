@@ -6,7 +6,7 @@ struct FortuneView: View {
     var body: some View {
         return AnyView(
             NavigationStack {
-                ScrollView {
+                ScrollView (showsIndicators: false){
                     VStack(spacing: 20) {
                         // Tarot Kartı
                         FortuneCardView(
@@ -18,20 +18,50 @@ struct FortuneView: View {
                         FortuneCardView(
                             title: "Kahve Falı",
                             info: "Kahve falı, kahve telvesi üzerindeki sembollerin yorumlanmasıyla geleceğe dair ipuçları veren bir fal çeşididir.",
-                            redirectView: AnyView(TarotQuestionView(adManager: adManager)) // Pass adManager here as AnyView
-                        )
+							redirectView: AnyView(CoffeeUploadView(adManager: adManager)) // Pass adManager here as AnyView
+						)
+						
+						FortuneCardView(
+							title: "Bulut Falı",
+							info: "Çok Yakında",
+							redirectView: AnyView(TarotQuestionView(adManager: adManager)) // Pass adManager here as AnyView
+						).disabled(true)
+							.opacity(0.5)
+						
+						FortuneCardView(
+							title: "Katina Falı",
+							info: "Çok Yakında",
+							redirectView: AnyView(TarotQuestionView(adManager: adManager)) // Pass adManager here as AnyView
+						).disabled(true)
+							.opacity(0.5)
+						
+						FortuneCardView(
+							title: "Bakla Falı",
+							info: "Çok Yakında",
+							redirectView: AnyView(TarotQuestionView(adManager: adManager)) // Pass adManager here as AnyView
+						).disabled(true)
+							.opacity(0.5)
+						
+						FortuneCardView(
+							title: "Melek Falı",
+							info: "Çok Yakında",
+							redirectView: AnyView(TarotQuestionView(adManager: adManager)) // Pass adManager here as AnyView
+						).disabled(true)
+							.opacity(0.5)
                         
                         FortuneCardView(
                             title: "El Falı",
                             info: "Çok Yakında",
                             redirectView: AnyView(TarotQuestionView(adManager: adManager)) // Pass adManager here as AnyView
-                        )
+                        ).disabled(true)
+							.opacity(0.5)
                         
                         FortuneCardView(
                             title: "Su Falı",
                             info: "Çok Yakında",
                             redirectView: AnyView(TarotQuestionView(adManager: adManager)) // Pass adManager here as AnyView
-                        )
+                        ).disabled(true)
+							.opacity(0.5)
                     }
                     .padding()
                 }
