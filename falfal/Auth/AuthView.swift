@@ -226,17 +226,20 @@ struct AuthView: View {
 				}
 				.edgesIgnoringSafeArea(.vertical)
 			}
+			
 			.alert(alertMessage, isPresented: $showAlert) {
 				Button("OK", role: .cancel) { }
 			}
-			.navigationDestination(isPresented: $navigateToTabBar) {
+			.fullScreenCover(isPresented: $navigateToTabBar) {
 				ContentView()
 			}
 		}
 	}
 	
 	func handleAppleSignInCompletion(){
-		self.navigateToTabBar = true
+		DispatchQueue.main.async {
+			self.navigateToTabBar = true
+		}
 
 	}
 	
@@ -254,7 +257,6 @@ struct AuthView: View {
 			
 			switch result {
 			   case .success(_):
-				
 				handleAppleSignInCompletion()
 			   case .failure(let error):
 				   print("Apple Sign In Hatası: \(error.localizedDescription)")
@@ -497,14 +499,16 @@ class SignInDelegate: NSObject, ASAuthorizationControllerDelegate, ASAuthorizati
 		print("SignInDelegate başlatıldı")
 	}
 	
-	@EnvironmentObject var appState: AppState
 
 
 	func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
 		print("Presentation anchor istendi")
 		guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
 			  let window = windowScene.windows.first else {
-			return UIApplication.shared.windows.first ?? UIWindow()
+			if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+				return windowScene.windows.first ?? UIWindow()
+			}
+			return UIWindow()
 		}
 		return window
 	}
@@ -559,11 +563,8 @@ class SignInDelegate: NSObject, ASAuthorizationControllerDelegate, ASAuthorizati
 							print("Login başarılı")
 							if let token = response.data.token {
 								DispatchQueue.main.async {
+									Keychain.save(key: "authToken", value: token)
 									AppState().login(token: token)
-								}
-								// Token'ı keychain'e kaydet
-								Keychain.save(key: "authToken", value: token)
-								DispatchQueue.main.async {
 									self?.completion?(.success(authorization))
 								}
 							}

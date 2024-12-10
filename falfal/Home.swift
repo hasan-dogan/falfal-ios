@@ -170,6 +170,8 @@ struct HomeView: View {
 						.font(.system(size: 18, weight: .semibold))
 						.foregroundColor(.white)
 				}
+				
+
 			}
 			.onAppear {
 				fetchDashboardData()
@@ -287,9 +289,9 @@ struct HomeView: View {
 		// Önce mevcut timer'ı iptal et
 		progressTimer?.cancel()
 		
-		guard let serverTime = serverTime,
-			  let createAt = createAt,
-			  let endDate = endDate else { return }
+		guard let _ = serverTime,
+			  let _ = createAt,
+			  let _ = endDate else { return }
 		
 		// Yeni timer'ı başlat
 		progressTimer = Timer.publish(every: 1.0, on: .main, in: .common)

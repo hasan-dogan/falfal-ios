@@ -9,7 +9,7 @@ struct TarotQuestionView: View {
 	var body: some View {
 		// Kullanıcı giriş yapmamışsa AuthView'e yönlendir
 		if !appState.isAuthenticated {
-			return AnyView(AuthView(user: .constant(nil), backgroundImage: Image("Falsal"))) // Burada AuthView'e yönlendiriyoruz
+			return AnyView(AuthView(user: .constant(nil), backgroundImage: Image("falsal"))) // Burada AuthView'e yönlendiriyoruz
 		}else{
 			return AnyView(
 			NavigationStack {

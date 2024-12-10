@@ -120,7 +120,7 @@ struct CoffeeDetailView: View {
 					return
 				}
 				
-				// Debug için JSON'ı kontrol et
+				// Debug için JSON'ı yazdır
 				if let jsonString = String(data: data, encoding: .utf8) {
 					print("Gelen JSON:", jsonString)
 				}
@@ -129,206 +129,203 @@ struct CoffeeDetailView: View {
 					let decoder = JSONDecoder()
 					let response = try decoder.decode(CoffeeDetailResponse.self, from: data)
 					
-					// Başarılı decode
-					print("Decode başarılı - Message:", response.message)
-					print("Coffee ID:", response.data.id)
-					print("Image Count:", response.data.images.images.count)
-					
+					// Base64 stringleri direkt al
+					self.imageUrls = response.data.images.images
 					self.coffeeMessage = response.data.message
-					self.imageUrls = response.data.images.images.flatMap { $0 }
 					self.isLoading = false
-				} catch let decodingError as DecodingError {
-					switch decodingError {
-					case .typeMismatch(let type, let context):
-						self.errorMessage = "Tip uyuşmazlığı: \(type) at \(context.codingPath)"
-					case .valueNotFound(let type, let context):
-						self.errorMessage = "Değer bulunamadı: \(type) at \(context.codingPath)"
-					case .keyNotFound(let key, let context):
-						self.errorMessage = "Anahtar bulunamadı: \(key) at \(context.codingPath)"
-					case .dataCorrupted(let context):
-						self.errorMessage = "Veri bozuk: \(context)"
-					@unknown default:
-						self.errorMessage = "Bilinmeyen decode hatası"
-					}
-					print("Decode hatası detayı:", decodingError)
-					self.isLoading = false
+					
+					// Debug için yazdır
+					print("Yüklenen resim sayısı:", self.imageUrls.count)
+					
 				} catch {
-					self.errorMessage = "Genel hata: \(error.localizedDescription)"
-					print("Genel hata detayı:", error)
+					print("Decode hatası:", error)
+					self.errorMessage = "Veri işleme hatası: \(error.localizedDescription)"
 					self.isLoading = false
 				}
 			}
 		}.resume()
 	}
-}
-
-// MARK: - Yardımcı Görünümler
-struct LoadingView: View {
-	var body: some View {
-		VStack {
-			ProgressView()
-				.scaleEffect(1.5)
-				.tint(.white)
-			Text("Falınız Yükleniyor...")
-				.font(.system(size: 16, weight: .medium))
-				.foregroundColor(.white)
-				.padding(.top, 10)
-		}
-	}
-}
-
-struct ErrorView: View {
-	let message: String
 	
-	var body: some View {
-		VStack(spacing: 15) {
-			Image(systemName: "exclamationmark.triangle")
-				.font(.system(size: 40))
-				.foregroundColor(.red)
-			
-			Text("Bir Hata Oluştu")
-				.font(.title2.bold())
-				.foregroundColor(.white)
-			
-			Text(message)
-				.font(.body)
-				.foregroundColor(.white.opacity(0.8))
-				.multilineTextAlignment(.center)
-				.padding(.horizontal)
-		}
-		.padding()
-		.background(Color.black.opacity(0.5))
-		.cornerRadius(15)
-	}
-}
-
-struct ImageCarouselView: View {
-	let imageUrls: [String]
-	@Binding var selectedImage: UIImage?
-	@Binding var currentIndex: Int
-	@Binding var showingImageViewer: Bool
-	
-	var body: some View {
-		TabView(selection: $currentIndex) {
-			ForEach(imageUrls.indices, id: \.self) { index in
-				if let imageData = Data(base64Encoded: imageUrls[index]),
-				   let uiImage = UIImage(data: imageData) {
-					Image(uiImage: uiImage)
-						.resizable()
-						.aspectRatio(contentMode: .fill)
-						.frame(maxWidth: .infinity)
-						.clipShape(RoundedRectangle(cornerRadius: 20))
-						.shadow(radius: 10)
-						.padding(.horizontal)
-						.tag(index)
-						.onTapGesture {
-							selectedImage = uiImage
-							showingImageViewer = true
-						}
-				}
-			}
-		}
-		.tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
-	}
-}
-
-struct MessageView: View {
-	let message: String
-	
-	var body: some View {
-		VStack(alignment: .leading, spacing: 15) {
-			Text("Falınızın Yorumu")
-				.font(.title3.bold())
-				.foregroundColor(.white)
-			
-			Text(message)
-				.font(.system(size: 16))
-				.foregroundColor(.white.opacity(0.9))
-				.lineSpacing(8)
-				.padding()
-				.background(
-					RoundedRectangle(cornerRadius: 15)
-						.fill(Color.white.opacity(0.1))
-				)
-		}
-		.padding(.horizontal)
-	}
-}
-
-struct ImageViewerOverlay: View {
-	let isVisible: Bool
-	let image: UIImage?
-	let imageUrls: [String]
-	@Binding var currentIndex: Int
-	let onDismiss: () -> Void
-	
-	var body: some View {
-		Group {
-			if isVisible, let image = image {
-				ZStack {
-					Color.black
-						.opacity(0.9)
-						.ignoresSafeArea()
-						.onTapGesture(perform: onDismiss)
-					
-					TabView(selection: $currentIndex) {
-						ForEach(imageUrls.indices, id: \.self) { index in
-							if let imageData = Data(base64Encoded: imageUrls[index]),
-							   let uiImage = UIImage(data: imageData) {
-								Image(uiImage: uiImage)
-									.resizable()
-									.aspectRatio(contentMode: .fit)
-									.tag(index)
-							}
-						}
-					}
-					.tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
-					
-					VStack {
-						HStack {
-							Spacer()
-							Button(action: onDismiss) {
-								Image(systemName: "xmark.circle.fill")
-									.font(.title)
-									.foregroundColor(.white)
-							}
-							.padding()
-						}
-						Spacer()
-					}
-				}
+	// MARK: - Yardımcı Görünümler
+	struct LoadingView: View {
+		var body: some View {
+			VStack {
+				ProgressView()
+					.scaleEffect(1.5)
+					.tint(.white)
+				Text("Falınız Yükleniyor...")
+					.font(.system(size: 16, weight: .medium))
+					.foregroundColor(.white)
+					.padding(.top, 10)
 			}
 		}
 	}
-}
-
-// Model yapılarını güncelleyelim
-struct CoffeeDetailResponse: Codable {
-	let success: Bool
-	let status: Int
-	let message: String
-	let data: CoffeeData
-}
-
-struct CoffeeData: Codable {
-	let id: Int
-	let message: String
-	let images: CoffeeImages
-}
-
-struct CoffeeImages: Codable {
-	let images: [String]  // Tek bir string array'i olarak değiştirdik
 	
-	// Custom decoder ekleyelim
-	init(from decoder: Decoder) throws {
-		let container = try decoder.container(keyedBy: CodingKeys.self)
+	struct ErrorView: View {
+		let message: String
 		
-		// İç içe array'i düz array'e çeviriyoruz
-		if let nestedArray = try? container.decode([[String]].self, forKey: .images) {
-			self.images = nestedArray.flatMap { $0 }
-		} else {
-			// Eğer düz array olarak gelirse direkt alalım
-			self.images = try container.decode([String].self, forKey: .images)
+		var body: some View {
+			VStack(spacing: 15) {
+				Image(systemName: "exclamationmark.triangle")
+					.font(.system(size: 40))
+					.foregroundColor(.red)
+				
+				Text("Bir Hata Oluştu")
+					.font(.title2.bold())
+					.foregroundColor(.white)
+				
+				Text(message)
+					.font(.body)
+					.foregroundColor(.white.opacity(0.8))
+					.multilineTextAlignment(.center)
+					.padding(.horizontal)
+			}
+			.padding()
+			.background(Color.black.opacity(0.5))
+			.cornerRadius(15)
+		}
+	}
+	
+	struct ImageCarouselView: View {
+		let imageUrls: [String]
+		@Binding var selectedImage: UIImage?
+		@Binding var currentIndex: Int
+		@Binding var showingImageViewer: Bool
+		
+		var body: some View {
+			TabView(selection: $currentIndex) {
+				ForEach(imageUrls.indices, id: \.self) { index in
+					if let imageData = Data(base64Encoded: imageUrls[index]),
+					   let uiImage = UIImage(data: imageData) {
+						Image(uiImage: uiImage)
+							.resizable()
+							.aspectRatio(contentMode: .fill)
+							.frame(maxWidth: .infinity)
+							.clipShape(RoundedRectangle(cornerRadius: 20))
+							.shadow(radius: 10)
+							.padding(.horizontal)
+							.tag(index)
+							.onTapGesture {
+								selectedImage = uiImage
+								showingImageViewer = true
+							}
+					}
+				}
+			}
+			.tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
+		}
+	}
+	
+	struct MessageView: View {
+		let message: String
+		
+		var body: some View {
+			VStack(alignment: .leading, spacing: 15) {
+				Text("Falınızın Yorumu")
+					.font(.title3.bold())
+					.foregroundColor(.white)
+				
+				Text(message)
+					.font(.system(size: 16))
+					.foregroundColor(.white.opacity(0.9))
+					.lineSpacing(8)
+					.padding()
+					.background(
+						RoundedRectangle(cornerRadius: 15)
+							.fill(Color.white.opacity(0.1))
+					)
+			}
+			.padding(.horizontal)
+		}
+	}
+	
+	struct ImageViewerOverlay: View {
+		let isVisible: Bool
+		let image: UIImage?
+		let imageUrls: [String]
+		@Binding var currentIndex: Int
+		let onDismiss: () -> Void
+		
+		var body: some View {
+			Group {
+				if isVisible, let image = image {
+					ZStack {
+						Color.black
+							.opacity(0.9)
+							.ignoresSafeArea()
+							.onTapGesture(perform: onDismiss)
+						
+						TabView(selection: $currentIndex) {
+							ForEach(imageUrls.indices, id: \.self) { index in
+								if let imageData = Data(base64Encoded: imageUrls[index]),
+								   let uiImage = UIImage(data: imageData) {
+									Image(uiImage: uiImage)
+										.resizable()
+										.aspectRatio(contentMode: .fit)
+										.tag(index)
+								}
+							}
+						}
+						.tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
+						
+						VStack {
+							HStack {
+								Spacer()
+								Button(action: onDismiss) {
+									Image(systemName: "xmark.circle.fill")
+										.font(.title)
+										.foregroundColor(.white)
+								}
+								.padding()
+							}
+							Spacer()
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	// Model yapılarını güncelleyelim
+	struct CoffeeDetailResponse: Codable {
+		let success: Bool
+		let status: Int
+		let message: String
+		let data: CoffeeData
+	}
+	
+	struct CoffeeData: Codable {
+		let id: Int
+		let message: String
+		let images: CoffeeImages
+	}
+	
+	struct CoffeeImages: Codable {
+		let images: [String]
+
+		enum CodingKeys: String, CodingKey {
+			case images
+		}
+
+		init(from decoder: Decoder) throws {
+			let container = try decoder.container(keyedBy: CodingKeys.self)
+			
+			// Üç katmanlı yapıdan düz array'e dönüştür
+			if let nestedImages = try? container.nestedContainer(keyedBy: CodingKeys.self, forKey: .images),
+			   let tripleNestedArray = try? nestedImages.nestedUnkeyedContainer(forKey: .images) {
+				var flatImages: [String] = []
+				var outerContainer = tripleNestedArray
+				
+				// Dıştaki array'leri düzleştir
+				while !outerContainer.isAtEnd {
+					if let innerArray = try? outerContainer.decode([String].self) {
+						flatImages.append(contentsOf: innerArray)
+					}
+				}
+				self.images = flatImages
+			} else {
+				self.images = []
+			}
 		}
 	}
 }
